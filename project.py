@@ -25,6 +25,7 @@ train_data = []
 train_label = []
 
 
+
 folder = 'dataset'
 files = os.listdir(folder)
 for file in files:
@@ -40,6 +41,11 @@ for file in files:
 # Convert lists to numpy arrays for further processing
 train_data = np.array(train_data)
 train_label = np.array(train_label)
+
+
+os.makedirs('train_trials', exist_ok=True)
+for i in range(train_data.shape[0]):
+	savemat(f'train_trials/train_ssvep_{i}.mat', {'data': train_data[i, :, :], 'label': train_label[i]})
 
 # indices_13 = np.where(train_label == 13)[0]
 # indices_17 = np.where(train_label == 17)[0]
@@ -244,9 +250,9 @@ os.makedirs('standarized_generated_data', exist_ok=True)
 
 print("this is standarized generated data shape", standardized_generated_data.shape)
 print("this is standarized generated data", standardized_generated_data)
+generated_data = np.squeeze(generated_data, axis=-1)
 for i in range(standardized_generated_data.shape[0]):
-    savemat(f'standarized_generated_data/generated_ssvep_{i}.mat', {'data': standardized_generated_data[i, :, :, 0]},{'label': y_test[i]})
-	
+	savemat(f'standarized_generated_data/generated_ssvep_{i}.mat', {'data': standardized_generated_data[i, :, :], 'label': y_test[i]})
 # Plot the generated images
 def plot_label_clusters(encoder, decoder, data, test_lab):
 	print("this is data shape inside loop", data.shape)
